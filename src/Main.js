@@ -87,7 +87,7 @@ class Main extends Component {
         this.setState({
             loading: true
         })
-        axios.get('http://localhost:8080/api/v1/info').then((response) => {
+        axios.get('http://localhost:8099/api/v1/info').then((response) => {
             if (response.data.code === '10000') {
                 const { filterName, filterType } = this.state
                 let sourceList = response.data.data
@@ -166,7 +166,7 @@ class Main extends Component {
         if (filterType === 2) {
             list = list.filter(item => item.startTime[1] === '正常' && item.endTime[1] === '正常')
         } else if (filterType === 3) {
-            list = list.filter(item => item.startTime[1] !== '正常' || item.endTime[1] !== '正常')
+            list = list.filter(item => (item.classNum !== '休息' && (item.startTime[1] !== '正常' || item.endTime[1] !== '正常')))
         } else if (filterType === 4) {
             list = list.filter(item => item.jiaBan !== null)
         }
@@ -179,7 +179,7 @@ class Main extends Component {
     render() {
         const uploadProps = {
             name: 'file',
-            action: 'http://localhost:8080/api/v1/upload/excel',
+            action: 'http://localhost:8099/api/v1/upload/excel',
             maxCount: [1],
             progress: {
                 strokeColor: {
@@ -220,6 +220,9 @@ class Main extends Component {
                 dataSource={list}
                 columns={columns}
                 bordered
+                rowClassName={record => {
+                    if (record.classNum === "休息") return 'table-color-dust'
+                }}
             />
         </div>
     }

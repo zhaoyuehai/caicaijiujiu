@@ -10,6 +10,9 @@
 .uploadFile {
     width: 300px;
 }
+.table-color-dust{
+   color: deeppink;
+}
 
 .App-logo {
     height: 40vmin;
