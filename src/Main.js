@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 import { Divider, Button, message, Select, Table, Tag, Upload, Radio } from "antd";
 import { InboxOutlined, CheckCircleOutlined, ExclamationCircleOutlined, SyncOutlined } from "@ant-design/icons";
+import { getBaseUrl, BaseUrlForm } from './component/BaseUrlForm';
 
 const { Option } = Select;
 const { Dragger } = Upload;
@@ -87,7 +88,7 @@ class Main extends Component {
         this.setState({
             loading: true
         })
-        axios.get('http://localhost:8080/api/v1/info').then((response) => {
+        axios.get(`${getBaseUrl()}/api/v1/info`).then((response) => {
             if (response.data.code === '10000') {
                 const { filterName, filterType } = this.state
                 let sourceList = response.data.data
@@ -179,7 +180,7 @@ class Main extends Component {
     render() {
         const uploadProps = {
             name: 'file',
-            action: 'http://localhost:8080/api/v1/upload/excel',
+            action: `${getBaseUrl()}/api/v1/upload/excel`,
             maxCount: [1],
             progress: {
                 strokeColor: {
@@ -193,13 +194,16 @@ class Main extends Component {
         }
         const { loading, filterName, filterType, list, names } = this.state
         return <div className='main'>
-            <div className='uploadFile'>
-                <Dragger {...uploadProps} onChange={this.handleUploaderChange}>
-                    <p className="ant-upload-drag-icon">
-                        <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">点击或者拖拽Excel文件到这里</p>
-                </Dragger>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <div className='uploadFile'>
+                    <Dragger {...uploadProps} onChange={this.handleUploaderChange}>
+                        <p className="ant-upload-drag-icon">
+                            <InboxOutlined />
+                        </p>
+                        <p className="ant-upload-text">点击或者拖拽Excel文件到这里</p>
+                    </Dragger>
+                </div>
+                <BaseUrlForm />
             </div>
             <Divider />
             <Select defaultValue={filterName} style={{ width: 120 }} onChange={this.onSelectChange}>
