@@ -167,7 +167,7 @@ class Main extends Component {
         if (filterType === 2) {
             list = list.filter(item => item.startTime[1] === '正常' && item.endTime[1] === '正常')
         } else if (filterType === 3) {
-            list = list.filter(item => item.startTime[1] !== '正常' || item.endTime[1] !== '正常')
+            list = list.filter(item => (item.classNum !== '休息' && (item.startTime[1] !== '正常' || item.endTime[1] !== '正常')))
         } else if (filterType === 4) {
             list = list.filter(item => item.jiaBan !== null)
         }
@@ -224,6 +224,9 @@ class Main extends Component {
                 dataSource={list}
                 columns={columns}
                 bordered
+                rowClassName={record => {
+                    if (record.classNum === "休息") return 'table-color-dust'
+                }}
             />
         </div>
     }
